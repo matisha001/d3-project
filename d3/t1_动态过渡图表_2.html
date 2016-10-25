@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>t1_动态过渡图表_2</title>
+    <script src="d3.js"></script>
+</head>
+<body>
+<script>  
+var width = 400;
+var height = 400;
+
+var svg = d3.select("body")
+    .append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+svg.append("circle")
+        .attr("cx", 300)//cx为在x轴位置
+        .attr("cy", 300)//cy为在y轴位置
+        .attr("r", 25)//r为圆的半径
+        .style("fill","green")
+        .transition()
+        .duration(1000)
+        .attr("cx", 100);
+svg.append("circle")        
+        .attr("cx", 170)
+        .attr("cy", 170)
+        .attr("r", 55)
+        .style("fill","green")
+        .transition()
+        .duration(1500)
+        .attr("cx", 130)
+        .style("fill","red");
+svg.append("circle")        
+        .attr("cx", 80)
+        .attr("cy", 80)
+        .attr("r", 45)
+        .style("fill","green")
+        .transition()
+        .duration(2000)
+        .ease("bounce")
+        .attr("cx", 200)
+        .style("fill","yellow")
+        .attr("r", 25);
+</script>
+</body>
+</html>

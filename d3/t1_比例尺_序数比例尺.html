@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>t1_比例尺_序数比例尺</title>
+    <script src="d3.js"></script>
+</head>
+<body>
+    <script>  
+var index = [0, 1, 2, 3, 4];
+var color = ["red", "blue", "green", "yellow", "black"];
+var ordinal = d3.scale.ordinal()
+        .domain(index)
+        .range(color);
+
+ordinal(0); //返回 red
+ordinal(2); //返回 green
+ordinal(4); //返回 black
+//定义域和值域不一定是连续的，需要用到序数比例尺。
+    </script>
+</body>
+</html>

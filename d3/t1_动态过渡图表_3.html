@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>t1_选择元素</title>
+	<script src="d3.js"></script>
+</head>
+<body>
+    <script>  
+var width = 400;
+var height = 400;
+
+var svg = d3.select("body")
+    .append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+svg.append("circle")
+        .attr("cx", 300)//cx为在x轴位置
+        .attr("cy", 300)//cy为在y轴位置
+        .attr("r", 25)//r为圆的半径
+        .style("fill","green")
+        .transition()
+        .duration(1000)
+        // .attr({"cx":100},{"cy": 100})注意这种写法报错
+        .attr("cx", 100)
+        .duration(1000)
+        .attr("cy", 100);
+    </script> 
+</body>
+</html>

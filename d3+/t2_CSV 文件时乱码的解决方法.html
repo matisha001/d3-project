@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>t2_CSV 文件时乱码的解决方法</title>
+	<script src="../d3.js"></script>
+</head>
+<body>
+    <script>  
+    /*
+var csv = d3.dsv(",", "text/csv;charset=gb2312");
+var tsv = d3.dsv("	", "text/tab-separated-values;charset=gb2312");
+csv("xxx.csv",function(error,csvdata){
+}
+tsv("xxx.tsv",function(error,tsvdata){
+
+}
+    */
+    d3.csv("1.csv",function(error,csvdata){     
+        var str = d3.csv.format( csvdata );         
+        console.log(str.length);
+        console.log(str);   
+    });
+    </script> 
+</body>
+</html>

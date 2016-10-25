@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>t1_比例尺_线性比例尺</title>
+    <script src="d3.js"></script>
+</head>
+<body>
+    <script>  
+    // 将某一区域的值映射到另一区域，其大小关系不变。
+    //比例尺，很像数学函数,D3中的比例尺有定义域和值域，分别被称为 domain 和 range。
+var dataset = [1.2, 2.3, 0.9, 1.5, 3.3];
+var min = d3.min(dataset);
+var max = d3.max(dataset);
+
+var linear = d3.scale.linear()
+        .domain([min, max])
+        .range([0, 100]);
+
+linear(0.9);    //返回 0
+linear(2.3);    //返回 175
+linear(3.3);    //返回 300
+// d3.scale.linear() 返回一个线性比例尺。
+//domain() 和 range() 分别设定比例尺的定义域和值域。
+//比例尺的定义域 domain 为：[0.9, 3.3]
+//比例尺的值域 range 为：[0, 300]
+//当输入 0.9 时，返回 0；当输入 3.3 时，返回 300。
+//d3.scale.linear() 的返回值，是可以当做函数来使用的。
+    </script>
+</body>
+</html>

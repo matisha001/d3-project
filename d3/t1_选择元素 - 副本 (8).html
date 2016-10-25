@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>t1_选择元素</title>
+	<script src="d3.js"></script>
+</head>
+<body>
+	<p>Hello World 1</p>
+    <p>Hello World 2</p>
+    <script>  
+    	var p = d3.select("body").selectAll("p").text("w4567o");      
+    	p.style("color","red").style("font-size","72px");
+    	// d3.select()：是选择所有指定元素的第一个
+    	// d3.selectAll()：是选择指定元素的全部
+    </script> 
+</body>
+</html>

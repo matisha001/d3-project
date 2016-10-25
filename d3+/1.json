@@ -1,0 +1,14 @@
+{
+"nodes":[
+{ "name": "云天河"   , "image" : "tianhe.png" },
+{ "name": "韩菱纱"   , "image" : "lingsha.png" },
+{ "name": "柳梦璃"   , "image" : "mengli.png" },
+{ "name": "慕容紫英" , "image" : "ziying.png" }
+],
+"edges":[
+{ "source": 0 , "target": 1 , "relation":"挚友" },
+{ "source": 0 , "target": 2 , "relation":"挚友" },
+{ "source": 1 , "target": 2 , "relation":"挚友" },
+{ "source": 0 , "target": 3 , "relation":"挚友" }
+]
+}

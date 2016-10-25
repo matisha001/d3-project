@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>t1_柱形图-比例尺</title>
+    <script src="d3.js"></script>
+</head>
+<body>
+    <script>  
+var dataset = [ 2.5 , 2.1 , 1.7 , 1.3 , 0.9 ];
+var svg = d3.select("body")     
+    .append("svg")          
+var linear = d3.scale.linear()
+        .domain([0, d3.max(dataset)])
+        .range([0, 250]);
+var rectHeight = 25;   
+
+svg.selectAll("rect")
+    .data(dataset)
+    .enter()
+    .append("rect")
+    .attr("x",20)
+    .attr("y",function(d,i){
+         return i * rectHeight;
+    })
+    .attr("width",function(d){
+         return linear(d);   
+    })
+    .attr("height",rectHeight-2)
+    .attr("fill","steelblue");        
+    </script>
+</body>
+</html>

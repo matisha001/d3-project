@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>t2_方形分区图</title>
+	<script src="../d3.js"></script>
+	<style>
+		.node_text{
+			font-size: 10px;
+			text-anchor: middle;
+		}
+	</style>
+</head>
+<body>
+
+<script> 
+var width = 1000;
+var height = 600; 
+var color = d3.scale.category20();
+/*布局（数据转换）*/
+var partition = d3.layout.partition()//分区图的布局
+			.sort(null)//sort 设定内部的顶点的排序函数，null 表示不排序。
+			.size([width,height])//size 设定转换后图形的范围,运用得当可变为圆形分区图。
+			.value(function(d) { return 1; });
+//value 设定表示分区大小的值。如果数据文件中用 size 值表示结点大小，那么这里可写成 return d.size。
+//读取并转换数据
+var svg = d3.select("body").append("svg")
+						.attr("width",width)
+						.attr("height",height);
+d3.json("../GeoJSON/city_tree.json", function(error, root) {
+	if(error)
+		console.log(error);
+	console.log(root);
+        //转换数据
+	var nodes = partition.nodes(root);
+	var links = partition.links(nodes);   
+        //输出转换后的顶点
+	console.log(nodes);
+	/*绑定顶点数据，分别绘制矩形和文字*/
+	var rects = svg.selectAll("g")
+				  .data(nodes)
+				  .enter().append("g");
+	rects.append("rect")
+		.attr("x", function(d) { return d.x; })    // 顶点的 x 坐标
+		.attr("y", function(d) { return d.y; })    // 顶点的 y 坐标
+		.attr("width", function(d) { return d.dx; })  // 顶点的宽度 dx
+		.attr("height", function(d) { return d.dy; })  //顶点的高度 dy
+		.style("stroke", "#fff")
+		.style("fill", function(d) { return color((d.children ? d : d.parent).name); })
+		.on("mouseover",function(d){
+			d3.select(this)
+				.style("fill","blue");
+		})
+		.on("mouseout",function(d){
+			d3.select(this)
+				.transition()
+				.duration(200)
+				.style("fill", function(d) { 
+					return color((d.children ? d : d.parent).name); 
+				});
+		}); 
+	rects.append("text")  
+		.attr("class","node_text")
+		.attr("transform",function(d,i){
+			return "translate(" + (d.x+20) + "," + (d.y+20) + ")";
+		}) 
+		.text(function(d,i) {
+			return d.name;	
+		});
+})
+/*
+x: 顶点的 x 坐标位置
+y: 顶点的 y 坐标位置
+dx: 顶点的宽度 dx
+dy: 顶点的高度 dy
+*/
+</script> 
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>t2_CSV 表格文件的读取</title>
+	<script src="../d3.js"></script>
+</head>
+<body>
+    <script>  
+
+    /*
+        CSV 格式是一种非常简单的表格文件，它的每个单元格以逗号分隔，
+        有的表格编辑软件在保存的时候会让选择用分号或逗号等保存，这时候最好是选择用逗号。
+        在 D3 中读取 CSV 文件基本上只需要用 d3.csv() 函数即可。
+    */
+    d3.csv("1.csv",function(error,csvdata){
+        if(error){
+            console.log(error);
+        }
+        console.log(csvdata);
+        for( var i=0; i<csvdata.length; i++ ){
+            var name = csvdata[i].name;
+            var sex = csvdata[i].sex;
+            var age = csvdata[i].age;
+            console.log( "name: " + name + "\n" +
+                         "sex: " + sex + "\n" +
+                         "age: " + age  );
+        }
+    });
+    </script> 
+</body>
+</html>

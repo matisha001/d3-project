@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>t1_选择元素</title>
+	<script src="d3.js"></script>
+</head>
+<body>
+    <p></p>
+    <p></p>
+    <script> 
+        var str = "China";
+        var body = d3.select("body");
+        var p = body.selectAll("p");
+        p.datum(str);
+        p.text(function(d, i){
+            return "第 "+ i + " 个元素绑定的数据是 " + d;
+        }); //i 代表索引，代表数据的索引号，从 0 开始。
+    	// datum()：绑定一个数据到选择集上
+    	// data()：绑定一个数组到选择集上，数组的各项值分别与选择集的各元素绑定
+        var dataset = ["I like dogs","I like cats","I like snakes"];
+        p.data(dataset).text(function(d, i){
+              return d;
+        });
+    </script> 
+</body>
+</html>

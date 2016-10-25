@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>t2_tsv表格文件的读取</title>
+	<script src="../d3.js"></script>
+</head>
+<body>
+    <script>  
+    /*
+        TSV 表格文件
+        SV(Tab Separated Values)，制表分隔值，它和 CSV 文件仅仅是分隔符不一致。
+        name    age
+        张三  22
+        李四  24
+        在 D3 中读取 TSV 文件的方法和 CSV 文件是一样的，只要更改一下函数名即可。d3.tsv()
+        
+    */
+  /*
+  d3.csv = d3.dsv(",", "text/csv");
+  d3.tsv = d3.dsv(" ", "text/tab-separated-values");
+  dsv 其实可以读取以任意字符或字符串作为分隔符的表格文件。
+var dsv = d3.dsv(";", "text/plain");
+dsv("table.dsv",function(error,dsvdata){
+    if(error)
+        console.log(error);
+    console.log(dsvdata);
+});
+先用 d3.dsv(“;”, “text/plain”); 定义分隔符为分号，再按照读取 csv 和 tsv 文件一样的方法读取即可。
+//CSV 文件和 TSV 文件仅仅是分隔符不同，它们的本质都是调用的 DSV 函数，所以 DSV 函数的掌握至关重要。
+  */
+
+    d3.tsv("1.text",function(error,tsvdata){
+        console.log(tsvdata);
+        var str = d3.tsv.format( tsvdata );         
+        console.log(str.length);
+        console.log(str);   
+    });
+    </script> 
+</body>
+</html>

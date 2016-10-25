@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>t2_拖拽的应用-Drag</title>
+	<script src="../d3.js"></script>
+</head>
+<body>
+<script>
+var width = 600;
+var height = 600;
+//D3中可用 d3.behavior.drag() 来定义 drag 行为。
+var drag = d3.behavior.drag()
+				.on("drag", dragmove); 
+				
+function dragmove(d) {	
+	d3.select(this)
+	  .attr("cx", d.cx = d3.event.x )
+	  .attr("cy", d.cy = d3.event.y );
+} 
+/*
+当 drag 事件发生后即调用 dragmove 函数。除了 drag 事件之外，还有 dragstart 和 dragend 事件.
+dragmove()里，出现了 d3.event.x 和 d3.event.y 两个变量，这是当前鼠标的位置。
+*/ 
+var circles = [ { cx: 150, cy:200, r:30 },
+				{ cx: 250, cy:200, r:30 },];
+
+var svg = d3.select("body")
+			.append("svg")
+			.attr("width",width)
+			.attr("height",height);
+svg.selectAll("circle")
+	.data(circles)
+	.enter()
+	.append("circle")
+	.attr("cx",function(d){ return d.cx; })
+	.attr("cy",function(d){ return d.cy; })
+	.attr("r",function(d){ return d.r; })
+	.attr("fill","black")
+	.call(drag);  //这里是刚才定义的drag行为
+</script>
+
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>t2_将读入的数据转换为字符串</title>
+	<script src="../d3.js"></script>
+</head>
+<body>
+    <script>  
+    /*
+        在 D3 的官方 API 中，一些函数： parse 、parseRows、format、formatRows。
+        但经过我的试验，只有 format 一个函数可以使用，其它的都是在 D3 内部使用的。
+
+
+    */
+    d3.csv("1.csv",function(error,csvdata){     
+        var str = d3.csv.format( csvdata );         
+        console.log(str.length);
+        console.log(str);   
+    });
+    </script> 
+</body>
+</html>

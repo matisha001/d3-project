@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>t2_区分图的函数</title>
+	<script src="../d3.js"></script>
+	<style>
+		.node_text{
+			font-size: 10px;
+			text-anchor: middle;
+		}
+	</style>
+</head>
+<body>
+
+<script> 
+//分区图布局
+/*d3.layout.partition()
+//将根数据传入后，得到的节点的数组，每个节点添加8个参数
+parent – 父节点
+children – 子节点
+value – 表示节点的大小，由下面 value() 函数指定的值，父节点的值等于子节点值的和
+depth – 节点的深度
+x – 节点的x方向的坐标（不一定指x轴方向，跟据 size() 函数的意义而定）
+y – 节点的y方向的坐标（同上）
+dx – x方向扩展的宽度（同上）
+dy – y方向扩展的宽度（同上）
+*/
+/*
+links()
+将数组传入后，得到连接线的关系，起点和终点分别存在 source 和 target 变量中。
+*/
+/*
+chilldren()
+指定表示子节点的字符串。
+function children(d) {
+  return d.children;
+}
+//表示在 JSON 文件中，子节点的变量符号用 children 表示：
+{
+"name":"中国",
+"children":
+[
+	{ 
+	  "name":"浙江" , 
+  	  "children":
+  	  [
+	  	  	{"name":"杭州" },
+	  	  	{"name":"宁波" },
+	  	  	{"name":"温州" },
+	  	  	{"name":"绍兴" }
+  	  ] 
+  	}
+]
+}
+*/
+/*
+sort()
+指定对同深度的节点进行排序的函数。如果不排序，则按照默认顺序显示。
+function comparator(a, b) {
+  return b.value - a.value;
+}
+//如果第一个参数应该位于第二个参数之前则需令其返回一个负数，如果相等则返回0，如果第一个参数应该位于第二个之后，则令其返回一个正数。
+*/
+
+
+/*
+设定用哪一个值来表示节点大小。
+function value(d) {
+  return d.size;
+}//用节点里的 size 值来表示节点的大小。
+*/
+
+
+/*
+size()
+设置分区图的范围。
+如果是方形的：size( [ width , height ] )
+如果是圆形的：size( [ 2 * Math.PI, radius * radius ] ) // radius 为圆的半径
+*/
+</script> 
+</body>
+</html>

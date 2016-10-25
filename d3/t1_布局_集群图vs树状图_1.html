@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>t1_布局_集群图vs树状图_1</title>
+    <script src="d3.js"></script>
+    <style>
+        .node circle {
+          fill: #fff;
+          stroke: steelblue;
+          stroke-width: 1.5px;
+        }
+        .node {
+          font: 12px sans-serif;
+        }
+        .link {
+          fill: none;
+          stroke: #ccc;
+          stroke-width: 1.5px;
+        }
+    </style>
+</head>
+<body>
+<script>
+/*
+
+*/
+var width = 500;
+var height = 500;
+
+var svg = d3.select("body")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height).append("g")
+    .attr("transform", "translate(40,0)");; 
+
+var cluster = d3.layout.cluster()
+       .size([width, height - 200]);
+/*
+定义一个集群图布局,变量 cluster 可用于转换数据,
+size() 设定尺寸，即转换后的各节点的坐标在哪一个范围内。
+*/
+d3.json("city_tree.json", function(error, root) {
+  var nodes = cluster.nodes(root);
+  links = cluster.links(nodes);
+  console.log(nodes);
+  console.log(links);
+  var link = svg.selectAll(".link")
+      .data(links)
+      .enter()
+      .append("path")
+      .attr("class", "link")
+      .attr("d", diagonal);   //使用对角线生成器
+  var node = svg.selectAll(".node")
+      .data(nodes)
+      .enter()
+      .append("g")
+      .attr("class", "node")
+      .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
+  node.append("circle")
+      .attr("r", 4.5);
+
+  node.append("text")
+      .attr("dx", function(d) { return d.children ? -8 : 8; })
+      .attr("dy", 3)
+      .style("text-anchor", function(d) { return d.children ? "end" : "start"; })
+      .text(function(d) { return d.name; });
+})
+/*
+d3.json() 是用来读取 JSON 文件的。d3.json() 不能读取本地文件。
+d3.json() 函数后面跟一个无名函数 function(error) ，参数 root 是读入的数据。
+nodes 中有各个节点的子节点（children）、深度（depth）、名称（name）、位置（x，y）信息，其中名称（name）是 json 文件中就有的属性。
+links 中有连线两端（ source , target ）的节点信息。
+*/
+/*
+d3.svg.diagonal()//对角线生成器，只需要输入两个顶点坐标
+即可生成一条贝塞尔曲线。
+*/
+var diagonal = d3.svg.diagonal()
+    .projection(function(d) { return [d.y, d.x]; });
+/*
+projection() 是一个点变换器，默认是 [ d.x , d.y ]，即保持原坐标不变，如果写成 [ d.y , d.x ] ，即是说对任意输入的顶点，都交换 x 和 y 坐标。
+*/
+
+</script>
+</body>
+</html>

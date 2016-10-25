@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>t1_布局_饼状图</title>
+    <script src="d3.js"></script>
+</head>
+<body>
+<script>
+    /*
+布局:制作常见图形的函数
+布局的作用是：将不适合用于绘图的数据转换成了适合用于绘图的数据。
+饼状图（Pie）、力导向图（Force）、弦图（Chord）、树状图（Tree）、集群图（Cluster）、捆图（Bundle）、打包图（Pack）、直方图（Histogram）、分区图（Partition）、堆栈图（Stack）、矩阵树图（Treemap）、层级图（Hierarchy）
+12 个布局中，层级图（Hierarchy）不能直接使用。集群图、打包图、分区图、树状图、矩阵树图是由层级图扩展来的。
+    */ 
+    var width = 400;
+    var height = 400;
+    var dataset = [ 30 , 10 , 143 , 55 , 13 , 30 ];
+    var svg = d3.select("body")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height);
+    var pie = d3.layout.pie();//定义一个布局
+    //返回值赋给变量 pie，此时 pie 可以当做函数使用。
+    var piedata = pie(dataset);//piedata 就是转换后的数据。
+    //布局不是要直接绘图，而是为了得到绘图所需的数据。
+    var outerRadius = 150; //外半径
+    var innerRadius = 0; //内半径，为0则中间没有空白
+//SVG 有一个元素，叫做路径 <path>，是 SVG 中功能最强的元素，它可以表示其它任意的图形。
+//路径是很难计算的，通过布局转换后的数据 piedata 仍然很难手动计算得到路径值。为我们完成这项任务的，就是生成器。
+//弧生成器，能够生成弧的路径，因为饼图的每一部分都是一段弧。
+//弧生成器返回的结果赋值给 arc,arc 可以当做一个函数使用，把 piedata 作为参数传入，即可得到路径值。
+    var arc = d3.svg.arc()  //弧生成器
+        .innerRadius(innerRadius)   //设置内半径
+        .outerRadius(outerRadius);  //设置外半径
+    var arcs = svg.selectAll("g")
+        .data(piedata)
+        .enter()
+        .append("g")
+        .attr("transform","translate("+ (width/2) +","+ (width/2) +")");
+    var color = d3.scale.category10();   //有十种颜色的颜色比例尺
+    arcs.append("path")
+        .attr("fill",function(d,i){
+            return color(i);
+        })
+        .attr("d",function(d){
+            return arc(d);   //调用弧生成器，得到路径值
+        });
+
+        arcs.append("text")
+        .attr("transform",function(d){
+            return "translate(" + arc.centroid(d) + ")";
+        })
+        .attr("text-anchor","middle")
+        .text(function(d){
+            return d.data;
+        });
+</script>
+</body>
+</html>

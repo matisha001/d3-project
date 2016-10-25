@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>t2_缩放的应用-zoom</title>
+	<script src="../d3.js"></script>
+</head>
+<body>
+<script>
+var width = 600;
+var height = 600;
+var circles = [ { cx: 150, cy:200, r:30 },
+				{ cx: 250, cy:200, r:30 },];
+/*缩放是由 d3.behavior.zoom() 定义的。*/ 
+var svg = d3.select("body")
+			.append("svg")
+			.attr("width",width)
+			.attr("height",height);
+var zoom = d3.behavior.zoom()
+			.scaleExtent([1, 10])//scaleExtent 用于设置最小和最大的缩放比例
+			.on("zoom", zoomed);//当 zoom 事件发生时，调用 zoomed 函数
+function zoomed() {
+	d3.select(this).attr("transform", 
+		"translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+}
+//zoomed 函数，用于更改需要缩放的元素的属性，d3.event.translate 是平移的坐标值，d3.event.scale 是缩放的值。 
+var circles_group = svg.append("g")
+						.call(zoom);
+circles_group.selectAll("circle")
+		.data(circles)
+		.enter()
+		.append("circle")
+		.attr("cx",function(d){ return d.cx; })
+		.attr("cy",function(d){ return d.cy; })
+		.attr("r",function(d){ return d.r; })
+		.attr("fill","black");
+		//只是将圆 circle 元素添加到一个组 g 里，g 元素调用 call(zoom)，zoom 为刚才定义的缩放行为。
+</script>
+
+</body>
+</html>

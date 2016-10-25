@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>t1_动态过渡图表</title>
+    <script src="d3.js"></script>
+    <style>
+        .axis path,
+        .axis line{
+            fill: none;
+            stroke: black;
+            shape-rendering: crispEdges;
+        }
+
+        .axis text {
+            font-family: sans-serif;
+            font-size: 11px;
+        }
+    </style>
+</head>
+<body>
+<script>  
+/*
+D3 提供了 4 个方法用于实现图形的过渡：
+transition()启动过渡效果。
+duration()指定过渡的持续时间，单位为毫秒。
+ease()指定过渡的方式，常用的有：
+    linear：普通的线性变化
+    circle：慢慢地到达变换的最终状态
+    elastic：带有弹跳的到达最终状态
+    bounce：在最终状态处弹跳几次
+delay()指定延迟的时间，表示一定时间后才开始转变，单位同样为毫秒。
+可以对整体指定延迟，也可以对个别指定延迟。
+*/ 
+var width = 400;
+var height = 400;
+
+var svg = d3.select("body")
+    .append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+//画布周边的空白
+var padding = {left:30, right:30, top:20, bottom:20};
+
+var dataset = [10, 20, 50, 40, 33, 24, 12, 5];
+        
+//x轴的比例尺
+var xScale = d3.scale.ordinal()
+    .domain(d3.range(dataset.length))
+    .rangeRoundBands([0, width - padding.left - padding.right]);
+
+//y轴的比例尺
+var yScale = d3.scale.linear()
+    .domain([0,d3.max(dataset)])
+    .range([height - padding.top - padding.bottom, 0]);
+//x 轴使用序数比例尺，y 轴使用线性比例尺。
+
+//定义x轴
+var xAxis = d3.svg.axis()
+    .scale(xScale)
+    .orient("bottom");
+        
+//定义y轴
+var yAxis = d3.svg.axis()
+    .scale(yScale)
+    .orient("left");
+//矩形之间的空白
+var rectPadding = 4;
+
+//添加矩形元素
+var rects = svg.selectAll(".MyRect")
+        .data(dataset)
+        .enter()
+        .append("rect")
+        .attr("class","MyRect")
+        .attr("transform","translate(" + padding.left + "," + padding.top + ")")
+        .attr("x", function(d,i){
+            return xScale(i) + rectPadding/2;
+        } )
+        .attr("y",function(d){
+            return yScale(d);
+        })
+        .attr("width", xScale.rangeBand() - rectPadding )
+        .attr("height", function(d){
+            return height - padding.top - padding.bottom - yScale(d);
+        })
+        .attr("fill","red")         //初始颜色为红色
+        .transition()               //启动过渡
+        .duration(2000)
+        .ease("circle")
+        .delay(function(d,i){
+            return i * 200;
+        })
+        .attr("fill","steelblue")   //终止颜色为铁蓝色
+
+//添加文字元素
+var texts = svg.selectAll(".MyText")
+        .data(dataset)
+        .enter()
+        .append("text")
+        .attr("class","MyText")
+        .attr("transform","translate(" + padding.left + "," + padding.top + ")")
+        .attr("x", function(d,i){
+            return xScale(i) + rectPadding/2;
+        } )
+        .attr("y",function(d){
+            return yScale(d);
+        })
+        .attr("dx",function(){
+            return (xScale.rangeBand() - rectPadding)/2;
+        })
+        .attr("dy",function(d){
+            return 20;
+        })
+        .text(function(d){
+            return d;
+        });
+//添加x轴
+svg.append("g")
+  .attr("class","axis")
+  .attr("transform","translate(" + padding.left + "," + (height - padding.bottom) + ")")
+  .call(xAxis); 
+        
+//添加y轴
+svg.append("g")
+  .attr("class","axis")
+  .attr("transform","translate(" + padding.left + "," + padding.top + ")")
+  .call(yAxis);
+</script>
+</body>
+</html>

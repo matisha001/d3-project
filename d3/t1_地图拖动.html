@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>t1_地图拖动</title>
+    <script src="d3.js"></script>
+    <style>
+        .link {
+            stroke: #ccc;
+            stroke-width: 1;
+        }
+    </style>
+</head>
+<body>
+<script>
+/*
+ GeoJSON 文件中的地图数据，都是经度和纬度的信息。
+ 它们都是三维的，而要在网页上显示的是二维的，所以要设定一个投影函数来转换经度纬度。
+ 使用 d3.geo.mercator() 的投影方式。
+ 各种投影的函数，可以参考： https://github.com/mbostock/d3/wiki/Geo-Projections
+*/ 
+var width  = 1000;
+var height = 1000;
+var projection = d3.geo.mercator()
+        .center([107, 31])
+        .scale(850)
+        .translate([width/2, height/2]);
+var force = d3.layout.force().size([width, height]);
+//force 是定义力学图的 Layout 。
+var svg = d3.select("body")
+    .append("svg")
+    .attr("width", width)
+    .attr("height", height).append("g")
+    .attr("transform", "translate(0,0)");
+var path = d3.geo.path()
+    .projection(projection);
+// path 函数用于绘制地图路径
+var color = d3.scale.category20();
+//color 是颜色函数。
+d3.json("china_simplify.json", function(error, root) {
+        if (error) 
+            return console.error(error);
+        console.log(root.features);
+        var nodes = [];
+        var links = [];
+        root.features.forEach(function(d, i) {
+            var centroid = path.centroid(d);
+            centroid.x = centroid[0];
+            centroid.y = centroid[1];
+            centroid.feature = d;
+            nodes.push(centroid);
+        });
+/*
+root.features 中存有每一个省的数据
+ root.features.forEach() 即对每一个省的数据，执行 function 无名函数
+ 函数里计算出各省的中点，保存在 centroid.x 和 centroid.y 中,把其他信息赋值给 centroid.feature，最后插入到 nodes 中。
+*/  
+        var triangles = d3.geom.voronoi().triangles(nodes);
+/*
+对 nodes 中的顶点进行三角剖分，即用三角形来连接各顶点，结果保存在 triangles 中。
+*/       
+        triangles.forEach(function(d,i){
+            links.push( edge( d[0] , d[1] ) );
+            links.push( edge( d[1] , d[2] ) );
+            links.push( edge( d[2] , d[0] ) );
+        });
+        console.log(nodes);
+        console.log(links);
+        force.gravity(0)
+            .charge(0)
+            .nodes(nodes)
+            .links(links)
+            .linkDistance(function(d){ return d.distance; })
+            .start();
+        
+        var node = svg.selectAll("g")
+            .data(nodes)
+            .enter().append("g")
+            .attr("transform", function(d) { return "translate(" + -d.x + "," + -d.y + ")"; })
+            .call(force.drag)
+            .append("path")
+            .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+            .attr("stroke","#000")
+            .attr("stroke-width",1)
+            .attr("fill", function(d,i){
+                return color(i);
+            })
+            .attr("d", function(d){
+                return path(d.feature);
+            } );
+        
+        var link = svg.selectAll("line")
+            .data(links)
+            .enter()
+            .append("line")
+            .attr("class","link")
+            .attr("x1",function(d) { return d.source.x; } )
+            .attr("y1",function(d) { return d.source.y; } )
+            .attr("x2",function(d) { return d.target.x; } )
+            .attr("y2",function(d) { return d.target.y; } );
+        force.on("tick", function() {
+            link.attr("x1", function(d) { return d.source.x; })
+                .attr("y1", function(d) { return d.source.y; })
+                .attr("x2", function(d) { return d.target.x; })
+                .attr("y2", function(d) { return d.target.y; });
+
+           node.attr("transform", function(d) {
+              return "translate(" + d.x + "," + d.y + ")";
+           });
+        });
+})
+    function edge(a, b) {
+        var dx = a[0] - b[0], dy = a[1] - b[1];
+        return {
+            source: a,
+            target: b,
+            distance: Math.sqrt(dx * dx + dy * dy)
+        };
+    }
+</script>
+</body>
+</html>

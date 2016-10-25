@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>t1_选择-插入-删除元素</title>
+	<script src="d3.js"></script>
+</head>
+<body>
+    <div>选择-插入-删除元素</div>
+	<p id="test">Hello World 1</p>
+    <script>  
+        d3.select("body").append("p").text("在选择集末尾插入元素");
+        d3.select("body").insert("p","#test").text("在选择集前面插入元素");
+        d3.select("body").select("#test").remove();
+    	//插入元素
+        //append()：在选择集末尾插入元素
+        //insert()：在选择集前面插入元素
+        //remove(): 删除一个元素
+    </script> 
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>t1_Update、Enter、Exit_2</title>
+    <script src="d3.js"></script>
+</head>
+<body>
+<p></p>
+<p></p>
+<p></p>
+    <script>  
+var dataset = [ 3 ];
+
+//选择body中的p元素
+var p = d3.select("body").selectAll("p");
+
+//获取update部分
+var update = p.data(dataset);
+
+//获取exit部分
+var exit = update.exit();
+
+//update部分的处理：更新属性值
+update.text(function(d){
+    return "update " + d;
+});
+
+//exit部分的处理：修改p元素的属性
+exit.text(function(d){
+        return "exit";
+    });
+
+//exit部分的处理通常是删除元素
+// exit.remove();
+    </script> 
+</body>
+</html>

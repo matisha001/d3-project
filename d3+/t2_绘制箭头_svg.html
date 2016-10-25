@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>t2_绘制箭头_svg</title>
+</head>
+<body>
+<script> 
+	/*
+	在 SVG 中定义箭头的标识
+	定义箭头的标识如下，先写一对 <defs> ，里面再写一对 <marker>，其中 marker 的属性的意义为：
+	viewBox:坐标系的区域
+	refX, refY:在 viewBox 内的基准点，绘制时此点在直线端点上（要注意大小写）
+	markerUnits:标识大小的基准，有两个值：strokeWidth（线的宽度）和userSpaceOnUse（图形最前端的大小）
+	markerWidth, markerHeight:标识的大小
+	orient:绘制方向，可设定为：auto（自动确认方向）和 角度值
+	id:标识的id号
+	<defs>
+		<marker id="arrow" 
+				markerUnits="strokeWidth" 
+				markerWidth="12" 
+				markerHeight="12" 
+				viewBox="0 0 12 12" 
+				refX="6" 
+				refY="6" 
+				orient="auto">
+		        <path d="M2,2 L10,6 L2,10 L6,6 L2,2" style="fill: #000000;" />
+		</marker>
+	</defs>
+	*/ 
+	/*
+	在 SVG 中绘制箭头
+	<line x1="0" y1="0" x2="200" y2="50"  stroke="red" stroke-width="2" marker-end="url(#arrow)"/>
+	<path d="M20,70 T80,100 T160,80 T200,90" fill="white" stroke="red" stroke-width="2" marker-start="url(#arrow)" marker-mid="url(#arrow)" marker-end="url(#arrow)"/>
+	*/
+	/*
+	marker-start ：路径起点处
+	marker-mid：路径中间端点处（必须是 path 中间出现的点）
+	marker-end ：路径终点处
+	*/
+</script>
+<svg>
+	<defs>
+		<marker id="arrow" 
+				markerUnits="strokeWidth" 
+				markerWidth="12" 
+				markerHeight="12" 
+				viewBox="0 0 12 12" 
+				refX="6" 
+				refY="6" 
+				orient="auto">
+		        <path d="M2,2 L10,6 L2,10 L6,6 L2,2" style="fill: #000000;" />
+		</marker>
+	</defs>
+<!-- 	<line x1="0" y1="0" x2="200" y2="50"  stroke="red" stroke-width="2" marker-end="url(#arrow)"/> -->
+	<path d="M20,70 T80,100 T160,80 T200,90" fill="white" stroke="red" stroke-width="2" marker-start="url(#arrow)" marker-mid="url(#arrow)" marker-end="url(#arrow)"/>
+	<!-- 
+	marker-start ：路径起点处
+	marker-mid：路径中间端点处（必须是 path 中间出现的点）
+	marker-end ：路径终点处 
+	-->
+</svg> 
+</body>
+</html>
